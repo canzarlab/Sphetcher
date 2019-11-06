@@ -6,7 +6,8 @@ PCC = g++
 PLFLAGS = $(LFLAGS)
 PCFLAGS = -O3 $(INTT)
 
-BNCHMRK = setCover
+# BNCHMRK = setCover
+BNCHMRK = sphetcher
 
 # generic toplevel common files needed by this and most timing code 
 #GLOBAL_GENERIC = utils.h parseCommandLine.h IO.h parallel.h gettime.h sequence.h runTests.py 
@@ -36,14 +37,12 @@ $(TEST_FILES) : #cp ../common/$@ .
 # The sort used to remove duplicates
 GLOBAL = $(sort $(TIME_GLOBAL_REQUIRE) $(GLOBAL_REQUIRE))
 
-$(GLOBAL) :
-	ln -s ../../common/$@ .
+$(GLOBAL) : #ln -s ../../common/$@ .
 
 # Files copied (linked) from benchmark common directory
 BENCH = $(TIME).C $(sort $(TIME_REQUIRE) $(BENCH_REQUIRE))
 
-$(BENCH) :
-	ln -s ../common/$@ .
+$(BENCH) : #ln -s ../common/$@ .
 
 # Make all implementation objects
 %.o : %.C $(GLOBAL_REQUIRE) $(BENCH_REQUIRE) $(LOCAL_REQUIRE)
