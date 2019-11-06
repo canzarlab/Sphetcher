@@ -1,12 +1,14 @@
 # Sphetcher
 
-Sphetcher is a C++ library to sample big singe-cell RNA secquencing datasets based on the spherical thresholding algorithm. It selects a small subset of cells referred to as ```sketch``` that evenly cover the transcriptomic space occupied by the original dataset. Such a sketch can accelerate downstream analyses and highlight rare cell types.
+A software package for sampling massive singe-cell RNA secquencing datasets based on the spherical thresholding algorithm. It selects a small subset of cells referred to as ```sketch``` that evenly cover the transcriptomic space occupied by the original dataset. Such a sketch can accelerate downstream analyses and highlight rare cell types.
 
 
 # Installation
-All dependencies are bundled with Sphetcher. To build Sphetcher, go to directory src/, and run
+A compiler that supports C++11 is needed to build sphetcher. You can download and compile the latest code from github as follows:
 
 ```
+git clone  https://github.com/canzarlab/Sphetcher
+cd src
 make
 ```
 
