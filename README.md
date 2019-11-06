@@ -37,6 +37,6 @@ Input:
 
 Output:
 
-Indices of the sketch: __INDEX START FROM ZERO (0)__
+Indices of the sketch: __INDICES START FROM ZERO (0)__
 
 
