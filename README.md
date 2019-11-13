@@ -16,7 +16,7 @@ make
 
 ### To begin ###
 
-First you will need to provide the gene expression matrix in comma-separated values (CSV) format, where rows are samples (cells) and columns are features (genes, transcripts, principal components PCs).
+First you need to provide a matrix where rows are samples (cells) and columns are features (genes, transcripts, principal components PCs).
 
 Additionally you can provide the prior information (e.g, cell label, collection time point) in case you want to preserve certain number of samples from each category. 
 
@@ -45,7 +45,7 @@ sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3
 Input: 
 
 `expression_matrix.csv`
-  : expression matrix in CSV format: rows are cells, columns are features. <br/>
+  : expression matrix in comma-separated values (CSV) format: rows are cells, columns are features. <br/>
  `sketch_size` 
   : number of samples to obtain from the data set. <br/>
 `class_labels.csv`
