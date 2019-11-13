@@ -27,17 +27,17 @@ An example of inputs is provided in the directory ```/data```.
 Once you have compiled Sphetcher it can be run easily with one of the following two options:
 
 ```
-sphetcher expression_matrix.csv sketch_size
+sphetcher expression_matrix.csv sketch_size sketch_output.csv
 ```
 or 
 ```
-sphetcher expression_matrix.csv sketch_size class_labels.csv l_min
+sphetcher expression_matrix.csv sketch_size class_labels.csv l_min sketch_output.csv
 ```
 For an example provided in ```/data```
 ```
-sphetcher zeisel_pca.csv 1000 
+sphetcher zeisel_pca.csv 1000 sketch_output.csv
 or 
-sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 
+sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 sketch_output.csv
 ```
 
 #### Input/Output formats
@@ -55,6 +55,6 @@ Input:
 
 Output:
 
-An indicator vector (`indicator_solutions.csv`) of size ```n```(total number of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
+`sketch_output.csv` : an indicator vector of `n` samples where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
