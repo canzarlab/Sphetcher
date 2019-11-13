@@ -27,7 +27,19 @@ An example of inputs is provided in the directory ```/data```.
 Once you have compiled Sphetcher it can be run easily with the following command:
 
 ```
-sphetcher expression_matrix.csv
+sphetcher expression_matrix.csv sketch_size
+```
+or 
+```
+sphetcher expression_matrix.csv sketch_size labels.csv l_min
+```
+For an example provided in ```/data```
+```
+sphetcher zeisel_pca.csv 1000
+```
+or 
+```
+sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 
 ```
 
 #### Input/Output formats
@@ -36,9 +48,15 @@ Input:
 
 `expression_matrix.csv`
   : expression matrix: rows are samples, columns are genes.
+ `sketch_size` 
+  : number of samples to obtain from the data set
+`labels.csv`
+  : prior information, each class is presented by an integer between 1 and # of the classes
+`l_min`
+  : minimum number of samples we want to sample from each class
 
 Output:
 
-An indicator vector of size ```n``` where 1 indicates the sample is in the sketch, 0 otherwise. 
+An indicator vector (`indicator_solutions.csv`) of size ```n``` where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
