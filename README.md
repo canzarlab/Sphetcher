@@ -55,6 +55,6 @@ Input:
 
 Output:
 
-`sketch_output.csv` : an indicator vector of size ```n```(total number of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
+`sketch_output.csv` : an indicator vector of `n` samples where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
