@@ -31,13 +31,13 @@ sphetcher expression_matrix.csv sketch_size sketch_output.csv
 ```
 or 
 ```
-sphetcher expression_matrix.csv sketch_size class_labels.csv l_min sketch_output.csv
+sphetcher expression_matrix.csv sketch_size class_labels.csv l_min sketch_indicator_output.csv
 ```
 For an example provided in ```/data```
 ```
 sphetcher zeisel_pca.csv 1000 sketch_output.csv
 or 
-sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 sketch_output.csv
+sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 sketch_indicator_output.csv
 ```
 
 #### Input/Output formats
@@ -55,6 +55,6 @@ Input:
 
 Output:
 
-`sketch_output.csv` : an indicator vector of `n` samples where 1 indicates the sample is in the sketch, 0 otherwise. 
+`sketch_indicator_output.csv` : an indicator vector of `n` samples where 1 indicates the sample is in the sketch, 0 otherwise (there are `sketch_size` 1s in the vector).
 
 
