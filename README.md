@@ -49,12 +49,12 @@ Input:
  `sketch_size` 
   : number of samples to obtain from the data set. <br/>
 `class_labels.csv`
-  : prior information, each class is presented by an integer between 1 and K, where K is # of the classes. <br/>
+  : prior information in a column vector, each class is presented by an integer between 1 and K, where K is the number of classes. <br/>
 `l_min`
   : minimum number of samples we want to sample from each class <br/>
 
 Output:
 
-An indicator vector (`indicator_solutions.csv`) of size ```n```(total # of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
+An indicator vector (`indicator_solutions.csv`) of size ```n```(total number of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
