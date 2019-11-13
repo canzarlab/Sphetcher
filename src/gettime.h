@@ -57,7 +57,7 @@ struct timer {
   }
 
   void reportT(double time) {
-    std::cout << "PBBS-time: " << std::setprecision(3) << time;
+    // std::cout << "PBBS-time: " << std::setprecision(3) << time;
   }
 
   void reportTime(double time) {

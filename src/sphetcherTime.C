@@ -49,8 +49,6 @@ void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<
 template <class T>
 void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<int> & instance, vector<int> labels, int n_splits, int n_classes = 300){
     // hit every labels, n_splits: split each class into n_splits 
-    cout << " ----------------------------------- RUN HITTING CONDITION --------------------------------\n";
-    cout << "size of labels: " << labels.size() << ", l_min: " << n_splits << endl;
     int min_label = *std::min_element(labels.begin(), labels.end());
     vector<int> increase_demand(n_classes*2, 0);
     for (size_t i=0; i < labels.size(); ++i){
@@ -106,7 +104,6 @@ void timesetCover(graph<intT> G, int rounds, char* outFile) {
     nextTimeN();
     GG.del();
   }
-  cout << endl;
 
   if (outFile != NULL)
     writeIntArrayToFile(Sets.A, Sets.n, outFile);
@@ -127,6 +124,9 @@ vector<int> run_setcover_binarysearch(vector<vector<T>> & Dist, T d_min, T d_max
         if (n_splits == -1){
             create_threshold_data(Dist, L, n_sets, instance);
         }else{
+            if (iter == 0){
+                cout << " ----------------------------------- RUN HITTING CONDITION --------------------------------\n";
+            }
             create_threshold_data(Dist, L, n_sets, instance, v, n_splits);
         }
         // run setcover
@@ -138,7 +138,7 @@ vector<int> run_setcover_binarysearch(vector<vector<T>> & Dist, T d_min, T d_max
         vector<int> set_cover =  parse1DcsvFile2Int(outputFile, 1);
         std::remove(oFile);
         int cover_size = (int) set_cover.size();
-        cout << "iter: " << iter << ", sketch size: " << n_points << ", set_cover size: " << cover_size << "\n\n";
+        // cout << "iter: " << iter << ", sketch size: " << n_points << ", set_cover size: " << cover_size << "\n\n";
         if (cover_size < n_points){
             d_max = L;
         }
@@ -162,12 +162,12 @@ vector<int> convert2original_idx(const vector<int> & shuffle_idx, const vector<i
 vector<int> fill_in(vector<int> & solution, int n_sets, int n_points){
     int sol_size = (int) solution.size();
     if (n_points > sol_size){
-       for (int i=0; i < n_points-sol_size-1; ++i){
+       while ((int) solution.size() < n_points){
           int key = rand() % (n_sets-1);
-          if (std::find(solution.begin(), solution.end(), key) != solution.end())
+          if (!(std::find(solution.begin(), solution.end(), key) != solution.end()))
               solution.push_back(key);
        }
-      return solution; 
+      return solution;
     }
     else
     {
@@ -177,31 +177,18 @@ vector<int> fill_in(vector<int> & solution, int n_sets, int n_points){
 }
 
 int parallel_main(int argc, char* argv[]) {
-  // commandLine P(argc, argv, "[-o <outFile>] [-r <rounds>] <inFile>");
-  // char* iFile = P.getArgument(0);
-  // char* oFile = P.getOptionValue("-o");
-  // int rounds = P.getOptionIntValue("-r",1);
-
-    std::string dataname = "dataset";
     std::string dfilename, lfilename;
     vector<int> origin_labels;
     int n_splits = -1;
-    // std::string dfilename = "/data/hoan/spectral_clustering_matlab/data/"+dataname+"_pca.csv";
-    // std::string lfilename = "/data/hoan/spectral_clustering_matlab/data/"+dataname+"_pca_labels.csv";
-    if (argc < 3){
-        cout << "missing arguments \n";
-        cout << "./sphetcher expression_matrix.csv sketch_size \n";
-        cout << "./sphetcher expression_matrix.csv sketch_size class_labels.csv l_min\n";
-        assert(argc >= 3);
+    if (argc != 4 && argc != 6){
+        cout << "Input wrong arguments, using one of the following options: \n";
+        cout << "./sphetcher expression_matrix.csv sketch_size sketch_output.csv\n";
+        cout << "./sphetcher expression_matrix.csv sketch_size class_labels.csv l_min sketch_output.csv\n";
+        assert(argc == 4 || argc == 6);
     }
     dfilename = argv[1];
     int sketch_size = stoi(argv[2]);
-    if (argc == 4){
-        lfilename = argv[3];
-        n_splits = 1;
-        cout << "sample at least one element from each class \n";
-    }
-    if (argc == 5){
+    if (argc == 6){
         lfilename = argv[3];
         n_splits = stoi(argv[4]);
         cout << "sample at least " << n_splits << " elements from each class\n";
@@ -217,14 +204,7 @@ int parallel_main(int argc, char* argv[]) {
             }
         }
     }
-    // TODO: need to remove the labels 
-    // std::string dfilename = "../../../data/"+dataname+"-prepare-log_count_pca.csv";
-    // if (!is_file_exist(dfilename)){
-    //     dfilename = "../../../data/"+dataname+"_pca.csv";
-    // }
-    // if (!is_file_exist(dfilename)){
-    //     dfilename = "../../../data/"+dataname+"-prepare-log_count_pca2000.csv";
-    // }
+    std::string dataname = "dataset";
     auto start = chrono::steady_clock::now();
     vector<vector<double>> distance_mat_origin = parse2DCsvFile2Double(dfilename);
     int n_sets = (int) distance_mat_origin.size();
@@ -233,7 +213,8 @@ int parallel_main(int argc, char* argv[]) {
     for (int i=0; i < n_sets; ++i){
         shuffle_idx.push_back(i);
     }
-    // srand(time(0));
+    srand(time(0));
+    dataname += to_string(rand());
     vector<vector<int>> sc_solutions;
     vector<vector<int>> box_vec; 
     for(int rep=0; rep < 1; ++rep)
@@ -284,8 +265,9 @@ int parallel_main(int argc, char* argv[]) {
 
             // run for multiple n_points
             for (auto n_points: n_points_vec){
-                cout << "--------------------------------------------------------- n_points: " << n_points << " -------------------------------------------\n";
-                cout << "--------------------------------------------------------- l_min: " << n_splits << " -------------------------------------------\n";
+                cout << "--------------------------------------------------------- sketch size: " << n_points << " -------------------------------------------\n";
+                if (argc == 6)
+                    cout << "--------------------------------------------------------- l_min: " << n_splits << " -------------------------------------------\n";
                 vector<int> setcover = run_setcover_binarysearch(Dist, d_min, d_max, n_points, n_iters, dataname, n_sets, labels, n_splits);
                 vector<int> fill_setcover = fill_in(setcover, n_sets, n_points);
                 // vector<int> fill_setcover = setcover;
@@ -298,7 +280,7 @@ int parallel_main(int argc, char* argv[]) {
                 sc_solutions.push_back(sc_indicator);
             }
             end = chrono::steady_clock::now();
-            cout << "setcover in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
+            cout << "find sketch in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
         }
         else 
         {
@@ -366,13 +348,20 @@ int parallel_main(int argc, char* argv[]) {
                 }
                 sc_solutions.push_back(sc_indicator);
                 end = chrono::steady_clock::now();
-                cout << "setcover in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
+                cout << "find sketch in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
             }
 
         }
     }
     //write solution to file
     // writeVec2File(dataname + "_box_solutions.csv", box_vec);
-    string fileName = "indicator_solutions.csv";
-    writeVec2File(fileName, sc_solutions);
+    string fileName = argv[argc-1];
+    vector<int> ind_sol = sc_solutions.at(0);
+    vector<vector<int>> output_vec;
+    for (auto v: ind_sol){
+        vector<int> temp;
+        temp.push_back(v);
+        output_vec.push_back(temp);
+    }
+    writeVec2File(fileName, output_vec);
 }

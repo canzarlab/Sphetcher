@@ -72,7 +72,7 @@ intT maxElt(graph<intT> G) {
 std::pair<bucket*,intT> putInBuckets(Graph GS, double epsilon) {
   double x = 1.0/log(1.0 + epsilon);
   intT numBuckets = 1 + floor(x * log((double) GS.n));
-  cout << "numBuckets = " << numBuckets << endl;
+  // cout << "numBuckets = " << numBuckets << endl;
   intT* offsets = newA(intT, numBuckets + 256);
 
   // determine bucket numbers
@@ -129,7 +129,7 @@ intT processBucket (set* S, intT* elts, intT n, intT threshold) {
 _seq<intT> setCover(Graph GS) {
   double epsilon = 0.01;
   intT m = maxElt(GS);
-  cout << "m = " << m << endl;
+  // cout << "m = " << m << endl;
 
   bucketTime.start();
   pair<bucket*, int> B = putInBuckets(GS, epsilon);
@@ -199,10 +199,10 @@ _seq<intT> setCover(Graph GS) {
 	  //  << " work = " << work << " new = " << nNew << " threshold = " << threshold << endl;
     }
   }
-  cout << "Set cover size = " << nInCover << endl;
+  // cout << "Set cover size = " << nInCover << endl;
   // cout << "Total work = " << totalWork << endl;
   // cout << "Bucket Time = " << bucketTime.total() << endl;
-  cout << "Manis Time = " << manisTime.total() << endl;
+  // cout << "Manis Time = " << manisTime.total() << endl;
   // cout << "Pack Time = " << packTime.total() << endl;
 
   free(elts); free(S); free(ST); free(flag);
