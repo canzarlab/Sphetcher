@@ -119,6 +119,7 @@ template <class T>
 vector<int> run_setcover_binarysearch(vector<vector<T>> & Dist, T d_min, T d_max, int n_points, int n_iters, string dataname, int n_sets, vector<int> & v, int n_splits=-1)
 {
     // create the instance 
+    vector<int> results;
     for (int iter=0; iter < n_iters; ++iter)
     {
         T L = (d_min + d_max)/2.0;
@@ -144,8 +145,10 @@ vector<int> run_setcover_binarysearch(vector<vector<T>> & Dist, T d_min, T d_max
         else{
             d_min = L;
         }
-        if(iter == n_iters - 1){ return set_cover; }
+
+        if(iter == n_iters - 1){ results =  set_cover; }
     }
+    return results;
 }
 
 vector<int> convert2original_idx(const vector<int> & shuffle_idx, const vector<int> & result){
