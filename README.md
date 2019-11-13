@@ -31,7 +31,7 @@ sphetcher expression_matrix.csv sketch_size
 ```
 or 
 ```
-sphetcher expression_matrix.csv sketch_size labels.csv l_min
+sphetcher expression_matrix.csv sketch_size class_labels.csv l_min
 ```
 For an example provided in ```/data```
 ```
