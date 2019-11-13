@@ -45,8 +45,8 @@ vector<vector<int>> parse2DCsvFile(string inputFileName) {
                         removefist++;
                 }
                 catch (const std::invalid_argument e) {
-                    cout << "NaN found in file " << inputFileName << " line " << l
-                         << endl;
+                    // cout << "NaN found in file " << inputFileName << " line " << l
+                    //      << endl;
                     e.what();
                 }
             }
@@ -92,8 +92,8 @@ vector<vector<string>> parse2DCsvFile2String(string inputFileName) {
                         removefist++;
                 }
                 catch (const std::invalid_argument e) {
-                    cout << "NaN found in file " << inputFileName << " line " << l
-                         << endl;
+                    // cout << "NaN found in file " << inputFileName << " line " << l
+                    //      << endl;
                     e.what();
                 }
             }
@@ -134,8 +134,8 @@ vector<int> parse1DcsvFile2Int(string inputFileName, int from_line){
                         removefist++;
                 }
                 catch (const std::invalid_argument e) {
-                    cout << "NaN found in file " << inputFileName << " line " << l
-                         << endl;
+                    // cout << "NaN found in file " << inputFileName << " line " << l
+                    //      << endl;
                     e.what();
                 }
             }
@@ -175,8 +175,8 @@ vector<vector<double>> parse2DCsvFile2Double(string inputFileName) {
                         removefist++;
                 }
                 catch (const std::invalid_argument e) {
-                    cout << "NaN found in file " << inputFileName << " line " << l
-                         << endl;
+                    // cout << "NaN found in file " << inputFileName << " line " << l
+                    //      << endl;
                     e.what();
                 }
             }

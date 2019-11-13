@@ -72,7 +72,7 @@ vector<int> run_box_binarysearch(vector<vector<T>> & distance_mat, int dim_x, T 
         T delta = (delta_min + delta_max)/2.0;
         result = run_box(distance_mat, delta, dim_x, N);
         L = (int) result.size();
-        cout << "iter: " << iter <<  ", L_min: " << L_min << ", L_max: " << L_max << ", box size: " << L << "\n";
+        // cout << "iter: " << iter <<  ", L_min: " << L_min << ", L_max: " << L_max << ", box size: " << L << "\n";
         if (L < L_min){
             delta_max = delta;
         }else{
