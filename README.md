@@ -16,7 +16,7 @@ make
 
 ### To begin ###
 
-First you will need to provide the gene expression matrix in separate comma format (.csv), where rows are samples and columns are features (genes, transcripts).
+First you will need to provide the gene expression matrix in separate comma format (.csv), where rows are samples (cells) and columns are features (genes, transcripts, principal components PCs).
 
 Additionally you can provide the prior information (e.g, cell label, collection time point) in case you want to preserve certain number of samples from each category. 
 
