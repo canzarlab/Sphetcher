@@ -35,10 +35,8 @@ sphetcher expression_matrix.csv sketch_size class_labels.csv l_min
 ```
 For an example provided in ```/data```
 ```
-sphetcher zeisel_pca.csv 1000
-```
+sphetcher zeisel_pca.csv 1000 
 or 
-```
 sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 
 ```
 
