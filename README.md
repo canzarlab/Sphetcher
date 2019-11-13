@@ -51,7 +51,7 @@ Input:
 `class_labels.csv`
   : prior information stored in a column vector, each class is presented by an integer between 1 and K, where K is the number of classes. <br/>
 `l_min`
-  : minimum number of samples we want to sample from each class <br/>
+  : minimum number of representatives we want to sample from each class <br/>
 
 Output:
 
