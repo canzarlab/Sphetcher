@@ -2,7 +2,7 @@
 A software package for sampling massive singe-cell RNA secquencing datasets based on the spherical thresholding algorithm. It selects a small subset of cells referred to as ```sketch``` that evenly cover the transcriptomic space occupied by the original dataset. Such a sketch can accelerate downstream analyses and highlight rare cell types.
 
 <p align="center">
-<img src=img/overview.png  width="90%" height = "500">
+<img src=img/overview.png  width="99%" height = "500">
 </p>
 
 # Installation
