@@ -48,15 +48,18 @@ Input:
 
 `expression_matrix.csv`
   : expression matrix: rows are samples, columns are genes.
+  
  `sketch_size` 
   : number of samples to obtain from the data set
-`labels.csv`
-  : prior information, each class is presented by an integer between 1 and # of the classes
+  
+`class_labels.csv`
+  : prior information, each class is presented by an integer between 1 and K, where K is # of the classes
+  
 `l_min`
   : minimum number of samples we want to sample from each class
 
 Output:
 
-An indicator vector (`indicator_solutions.csv`) of size ```n``` where 1 indicates the sample is in the sketch, 0 otherwise. 
+An indicator vector (`indicator_solutions.csv`) of size ```n```(total # of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
