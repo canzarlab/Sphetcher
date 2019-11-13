@@ -16,7 +16,7 @@ make
 
 ### To begin ###
 
-First you will need to provide the gene expression matrix in separate comma format (.csv), where rows are samples and columns are features (genes, transcripts).
+First you need to provide a matrix where rows are samples (cells) and columns are features (genes, transcripts, principal components PCs).
 
 Additionally you can provide the prior information (e.g, cell label, collection time point) in case you want to preserve certain number of samples from each category. 
 
@@ -24,10 +24,20 @@ An example of inputs is provided in the directory ```/data```.
 
 ### Usage ###
 
-Once you have compiled Sphetcher it can be run easily with the following command:
+Once you have compiled Sphetcher it can be run easily with one of the following two options:
 
 ```
-sphetcher expression_matrix.csv
+sphetcher expression_matrix.csv sketch_size
+```
+or 
+```
+sphetcher expression_matrix.csv sketch_size class_labels.csv l_min
+```
+For an example provided in ```/data```
+```
+sphetcher zeisel_pca.csv 1000 
+or 
+sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 
 ```
 
 #### Input/Output formats
@@ -35,10 +45,16 @@ sphetcher expression_matrix.csv
 Input: 
 
 `expression_matrix.csv`
-  : expression matrix: rows are samples, columns are genes.
+  : expression matrix in comma-separated values (CSV) format: rows are cells, columns are features. <br/>
+ `sketch_size` 
+  : number of samples to obtain from the data set. <br/>
+`class_labels.csv`
+  : prior information stored in a column vector, each class is presented by an integer between 1 and K, where K is the number of classes. <br/>
+`l_min`
+  : minimum number of representatives we want to sample from each class <br/>
 
 Output:
 
-An indicator vector of size ```n``` where 1 indicates the sample is in the sketch, 0 otherwise. 
+An indicator vector (`indicator_solutions.csv`) of size ```n```(total number of samples) where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
