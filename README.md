@@ -49,7 +49,7 @@ Input:
  `sketch_size` 
   : number of samples to obtain from the data set. <br/>
 `class_labels.csv`
-  : prior information in a column vector, each class is presented by an integer between 1 and K, where K is the number of classes. <br/>
+  : prior information stored in a column vector, each class is presented by an integer between 1 and K, where K is the number of classes. <br/>
 `l_min`
   : minimum number of samples we want to sample from each class <br/>
 
