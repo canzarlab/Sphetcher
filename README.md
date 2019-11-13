@@ -27,7 +27,7 @@ An example of inputs is provided in the directory ```/data```.
 Once you have compiled Sphetcher it can be run easily with one of the following two options:
 
 ```
-sphetcher expression_matrix.csv sketch_size sketch_output.csv
+sphetcher expression_matrix.csv sketch_size sketch_indicator_output.csv
 ```
 or 
 ```
@@ -35,7 +35,7 @@ sphetcher expression_matrix.csv sketch_size class_labels.csv l_min sketch_indica
 ```
 For an example provided in ```/data```
 ```
-sphetcher zeisel_pca.csv 1000 sketch_output.csv
+sphetcher zeisel_pca.csv 1000 sketch_indicator_output.csv
 or 
 sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3 sketch_indicator_output.csv
 ```
