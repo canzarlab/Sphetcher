@@ -45,16 +45,13 @@ sphetcher zeisel_pca.csv 1000 zeisel_pca_labels.csv 3
 Input: 
 
 `expression_matrix.csv`
-  : expression matrix: rows are samples, columns are genes.
-  
+  : expression matrix: rows are samples, columns are genes. <br/>
  `sketch_size` 
-  : number of samples to obtain from the data set
-  
+  : number of samples to obtain from the data set. <br/>
 `class_labels.csv`
-  : prior information, each class is presented by an integer between 1 and K, where K is # of the classes
-  
+  : prior information, each class is presented by an integer between 1 and K, where K is # of the classes. <br/>
 `l_min`
-  : minimum number of samples we want to sample from each class
+  : minimum number of samples we want to sample from each class <br/>
 
 Output:
 
