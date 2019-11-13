@@ -39,6 +39,6 @@ Input:
 
 Output:
 
-Indices of the sketch: __INDICES START FROM ZERO (0)__
+An indicator vector of size ```n``` where 1 indicates the sample is in the sketch, 0 otherwise. 
 
 
