@@ -18,13 +18,13 @@ make
 
 First you will need to provide the gene expression matrix in separate comma format (.csv), where rows are samples (cells) and columns are features (genes, transcripts, principal components PCs).
 
-Additionally you can provide the prior information (e.g, cell label, collection time point) in case you want to preserve certain number of samples from each category. 
+Additionally you can provide the prior information (e.g, cell label, collection time point) in case you want to preserve certain number of samples from each category (`l_min`). 
 
 An example of inputs is provided in the directory ```/data```. 
 
 ### Usage ###
 
-Once you have compiled Sphetcher it can be run easily with the following command:
+Once you have compiled Sphetcher it can be run easily with one of the following two options:
 
 ```
 sphetcher expression_matrix.csv sketch_size
