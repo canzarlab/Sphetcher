@@ -1,4 +1,7 @@
 # Sphetcher
+### Sampling single-cell RNAseq data ###
+
+![Trajan Overview](img/overview.png)
 
 A software package for sampling massive singe-cell RNA secquencing datasets based on the spherical thresholding algorithm. It selects a small subset of cells referred to as ```sketch``` that evenly cover the transcriptomic space occupied by the original dataset. Such a sketch can accelerate downstream analyses and highlight rare cell types.
 
