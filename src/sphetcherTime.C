@@ -1,5 +1,5 @@
 #define OPENMP 1
-// branch beta 
+// branch beta v2 
 #include <iostream>
 #include <algorithm>
 #include <string>
