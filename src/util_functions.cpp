@@ -492,3 +492,5 @@ float euclideanDistance(const vector<double> & X,const vector<double> &Y, int n)
     } 
     return sqrt(sum_X);
 } 
+
+

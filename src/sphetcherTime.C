@@ -46,7 +46,6 @@ void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<
     instance[1] = first_elem_set_idx;
 }
 
-
 template <class T>
 void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<int> & instance, vector<int> labels, int n_splits, int n_classes = 300){
     // hit every labels, n_splits: split each class into n_splits 
@@ -205,7 +204,8 @@ int parallel_main(int argc, char* argv[]) {
             }
         }
     }
-    std::string dataname = "dataset";
+    srand(time(0));
+    std::string dataname = "dataset" + to_string(rand());
     auto start = chrono::steady_clock::now();
     vector<vector<double>> distance_mat_origin = parse2DCsvFile2Double(dfilename);
     int n_sets = (int) distance_mat_origin.size();
@@ -214,11 +214,10 @@ int parallel_main(int argc, char* argv[]) {
     for (int i=0; i < n_sets; ++i){
         shuffle_idx.push_back(i);
     }
-    srand(time(0));
     dataname += to_string(rand());
     vector<vector<int>> sc_solutions;
     vector<vector<int>> box_vec; 
-    for(int rep=0; rep < 1; ++rep)
+    for(int rep=0; rep < 10; ++rep)
     {
         std::random_shuffle(shuffle_idx.begin(), shuffle_idx.end());
         vector<vector<double>> distance_mat;
@@ -245,10 +244,11 @@ int parallel_main(int argc, char* argv[]) {
             vector<vector<float>> Dist(n_sets, vector<float>(n_sets,0.0));
             int i,j; 
             float d_max = 0.0;
-            #pragma omp parallel for private(i,j)
+            // #pragma omp parallel for private(i,j)
+            #pragma omp parallel for private(i,j) num_threads(30)
             for (i=0; i < n_sets; ++i){
                 for (j=0; j<n_sets; ++j){
-                    Dist[i][j] = euclideanDistance(distance_mat.at(i), distance_mat.at(j), n_dim);
+                    Dist[i][j] = correlationDistance(distance_mat.at(i), distance_mat.at(j), n_dim);
                     if (Dist[i][j] > d_max){
                         d_max = Dist[i][j];
                     }
@@ -315,10 +315,11 @@ int parallel_main(int argc, char* argv[]) {
             n_boxes = (int) box_idx.size();
             vector<vector<float>> Dist(n_boxes, vector<float>(n_boxes,0.0));
             int i,j; float d_max = 0.0;
-            #pragma omp parallel for private(i,j)
+            #pragma omp parallel for private(i,j) num_threads(30)
             for (i=0; i < n_boxes; ++i){
                 for (j=0; j< n_boxes; ++j){
-                    Dist[i][j] = correlationDistance(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim);
+                    // Dist[i][j] = euclideanDistance(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim);
+                    Dist[i][j] = distanceMetrics(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim, "correlation");
                     if (Dist[i][j] > d_max){
                         d_max = Dist[i][j];
                     }
@@ -357,12 +358,12 @@ int parallel_main(int argc, char* argv[]) {
     //write solution to file
     // writeVec2File(dataname + "_box_solutions.csv", box_vec);
     string fileName = argv[argc-1];
-    vector<int> ind_sol = sc_solutions.at(0);
-    vector<vector<int>> output_vec;
-    for (auto v: ind_sol){
-        vector<int> temp;
-        temp.push_back(v);
-        output_vec.push_back(temp);
-    }
+    // vector<int> ind_sol = sc_solutions.at(0);
+    vector<vector<int>> output_vec = transpose(sc_solutions);
+    // for (auto v: ind_sol){
+    //     vector<int> temp;
+    //     temp.push_back(v);
+    //     output_vec.push_back(temp);
+    // }
     writeVec2File(fileName, output_vec);
 }
