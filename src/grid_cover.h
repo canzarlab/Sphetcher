@@ -43,9 +43,14 @@ vector<int> run_box(vector<vector<T>> & distance_mat, T delta, int dim_x, T N)
         solution.push_back(make_pair(i, map_box(distance_mat[i], delta, dim_x, N)));
     }
     // sort solution according to the mapping value 
-    std::sort(solution.begin(), solution.end(), [](auto &left, auto &right) {
+    // std::sort(solution.begin(), solution.end(), [](auto &left, auto &right) {
+    //             return left.second < right.second;
+    //             });
+
+    std::sort(solution.begin(), solution.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
                 return left.second < right.second;
                 });
+
     auto unique_sol = unique_pair(solution);
     vector<int> result;
     for (size_t i=0; i < unique_sol.size(); ++i){

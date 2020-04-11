@@ -2,7 +2,7 @@ ifdef LONG
 INTT = -DLONG
 endif
 
-PCC = g++
+PCC = g++ -std=c++11
 PLFLAGS = $(LFLAGS)
 PCFLAGS = -O3 $(INTT)
 
