@@ -177,7 +177,7 @@ vector<int> fill_in(vector<int> & solution, int n_sets, int n_points){
 }
 
 int parallel_main(int argc, char* argv[]) {
-    string distance_metrics = "euclidean"; // manhattan, euclidean, spearman, cosine
+    string distance_metrics = "cosine"; // manhattan, euclidean, spearman, cosine
     std::string dfilename, lfilename;
     vector<int> origin_labels;
     int n_splits = -1;
