@@ -154,4 +154,163 @@ float correlationDistance(const vector<double> & X,const vector<double> &Y, int 
 
 float euclideanDistance(const vector<double> & X,const vector<double> &Y, int n);
 
+template <typename T>
+float distanceCorrelation(const vector<T> & X, const vector<T> &Y, int n) 
+{ 
+
+    float sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0; 
+    float squareSum_X = 0.0, squareSum_Y = 0.0; 
+    for (int i = 0; i < n; i++) 
+    { 
+        // sum of elements of array X. 
+        sum_X = sum_X + X[i]; 
+
+        // sum of elements of array Y. 
+        sum_Y = sum_Y + Y[i]; 
+
+        // sum of X[i] * Y[i]. 
+        sum_XY = sum_XY + X[i] * Y[i]; 
+
+        // sum of square of array elements. 
+        squareSum_X = squareSum_X + X[i] * X[i]; 
+        squareSum_Y = squareSum_Y + Y[i] * Y[i]; 
+    } 
+    // use formula for calculating correlation coefficient. 
+    float corr = (n * sum_XY - sum_X * sum_Y) 
+                / sqrt((n * squareSum_X - sum_X * sum_X) 
+                    * (n * squareSum_Y - sum_Y * sum_Y)); 
+
+    return 1.0 - corr; 
+} 
+
+// function returns the rank vector of the set of observations 
+template<typename T>
+vector<T> rankify(const vector<T> X){
+    int N = X.size(); 
+    vector<T> Rank_X(N); 
+    for(int i = 0; i < N; i++)  
+    { 
+        int r = 1, s = 1; 
+        // Count no of smaller elements 
+        // in 0 to i-1 
+        for(int j = 0; j < i; j++) { 
+            if (X[j] < X[i] ) r++; 
+            if (X[j] == X[i] ) s++; 
+        } 
+        // Count no of smaller elements 
+        // in i+1 to N-1 
+        for (int j = i+1; j < N; j++) { 
+            if (X[j] < X[i] ) r++; 
+            if (X[j] == X[i] ) s++; 
+        } 
+        // Use Fractional Rank formula 
+        // fractional_rank = r + (n-1)/2 
+        Rank_X[i] = r + (s-1) * 0.5;         
+    } 
+    // Return Rank Vector 
+    return Rank_X; 
+}
+
+template<typename T> 
+float distanceMetrics(const vector<T> & X, const vector<T> &Y, int n, std::string metrics)
+{
+    if (metrics == "manhattan"){
+        float sum_X = 0.0;
+        for (int i = 0; i < n; i++) 
+        { 
+            sum_X += abs(X[i]-Y[i]);
+        } 
+        return sum_X;
+    }
+    else if (metrics == "euclidean"){
+        float sum_X = 0.0;
+        for (int i = 0; i < n; i++) 
+        { 
+            sum_X += (X[i]-Y[i])*(X[i]-Y[i]);
+        } 
+        return sqrt(sum_X);
+    }
+    else if (metrics == "correlation"){
+        float sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0; 
+        float squareSum_X = 0.0, squareSum_Y = 0.0; 
+        for (int i = 0; i < n; i++) 
+        { 
+            // sum of elements of array X. 
+            sum_X = sum_X + X[i]; 
+
+            // sum of elements of array Y. 
+            sum_Y = sum_Y + Y[i]; 
+
+            // sum of X[i] * Y[i]. 
+            sum_XY = sum_XY + X[i] * Y[i]; 
+
+            // sum of square of array elements. 
+            squareSum_X = squareSum_X + X[i] * X[i]; 
+            squareSum_Y = squareSum_Y + Y[i] * Y[i]; 
+        } 
+        // use formula for calculating correlation coefficient. 
+        float corr = (n * sum_XY - sum_X * sum_Y) 
+                    / sqrt((n * squareSum_X - sum_X * sum_X) 
+                        * (n * squareSum_Y - sum_Y * sum_Y)); 
+
+        return 1.0 - corr; 
+    }
+    else if (metrics == "spearman"){
+        vector<T> vec_x = rankify(X);
+        vector<T> vec_y = rankify(Y);
+        return distanceCorrelation(vec_x, vec_y, n);
+    }
+    else if(metrics == "cosine"){
+        float mul = 0.0;
+        float d_a = 0.0;
+        float d_b = 0.0 ;
+
+        // Prevent Division by zero
+        if (X.size() < 1)
+        {
+            throw std::logic_error("Vector X and Vector Y are empty");
+        }
+
+        typename std::vector<T>::const_iterator Y_iter = Y.begin();
+        typename std::vector<T>::const_iterator X_iter = X.begin();
+        for( ; X_iter != X.end(); X_iter++ , Y_iter++ )
+        {
+            mul += *X_iter * *Y_iter;
+            d_a += *X_iter * *X_iter;
+            d_b += *Y_iter * *Y_iter;
+        }
+        if (d_a == 0.0f || d_b == 0.0f)
+        {
+            throw std::logic_error(
+                    "cosine similarity is not defined whenever one or both "
+                    "input vectors are zero-vectors.");
+        }
+
+        return 1.0 - mul/(sqrt(d_a) * sqrt(d_b));
+
+        }
+        else{
+            cout << "metrics is undefined\n";
+            return -1000.0;
+        }
+
+}
+
+template<typename T>
+vector<vector<T>> transpose(vector<vector<T> > &b)
+{
+    vector<vector<T> > trans_vec(b[0].size(), vector<T>());
+
+    for (int i = 0; i < b.size(); i++)
+    {
+        for (int j = 0; j < b[i].size(); j++)
+        {
+            trans_vec[j].push_back(b[i][j]);
+        }
+    }
+
+    return trans_vec;    // <--- reassign here
+}
+
+
 #endif

@@ -1,4 +1,5 @@
 #define OPENMP 1
+// branch beta v2 
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -44,7 +45,6 @@ void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<
     }
     instance[1] = first_elem_set_idx;
 }
-
 
 template <class T>
 void create_threshold_data(vector<vector<T>> & Dist, T LL, int set_size, vector<int> & instance, vector<int> labels, int n_splits, int n_classes = 300){
@@ -177,6 +177,7 @@ vector<int> fill_in(vector<int> & solution, int n_sets, int n_points){
 }
 
 int parallel_main(int argc, char* argv[]) {
+    string distance_metrics = "euclidean"; // manhattan, euclidean, spearman, cosine
     std::string dfilename, lfilename;
     vector<int> origin_labels;
     int n_splits = -1;
@@ -204,7 +205,8 @@ int parallel_main(int argc, char* argv[]) {
             }
         }
     }
-    std::string dataname = "dataset";
+    srand(time(0));
+    std::string dataname = "dataset" + to_string(rand());
     auto start = chrono::steady_clock::now();
     vector<vector<double>> distance_mat_origin = parse2DCsvFile2Double(dfilename);
     int n_sets = (int) distance_mat_origin.size();
@@ -213,7 +215,6 @@ int parallel_main(int argc, char* argv[]) {
     for (int i=0; i < n_sets; ++i){
         shuffle_idx.push_back(i);
     }
-    srand(time(0));
     dataname += to_string(rand());
     vector<vector<int>> sc_solutions;
     vector<vector<int>> box_vec; 
@@ -244,17 +245,19 @@ int parallel_main(int argc, char* argv[]) {
             vector<vector<float>> Dist(n_sets, vector<float>(n_sets,0.0));
             int i,j; 
             float d_max = 0.0;
-            #pragma omp parallel for private(i,j)
+            // #pragma omp parallel for private(i,j)
+            #pragma omp parallel for private(i,j) num_threads(30)
             for (i=0; i < n_sets; ++i){
                 for (j=0; j<n_sets; ++j){
-                    Dist[i][j] = euclideanDistance(distance_mat.at(i), distance_mat.at(j), n_dim);
+                    // Dist[i][j] = correlationDistance(distance_mat.at(i), distance_mat.at(j), n_dim);
+                    Dist[i][j] = distanceMetrics(distance_mat.at(i), distance_mat.at(j), n_dim, distance_metrics);
                     if (Dist[i][j] > d_max){
                         d_max = Dist[i][j];
                     }
                 }
             }
             end = chrono::steady_clock::now();
-            cout << "compute distance matrix in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
+            cout << "compute " << distance_metrics << " distance matrix in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
 
             start = chrono::steady_clock::now();
             d_max = d_max/2.0; float d_min = d_max/80.0; int n_iters = 20;
@@ -284,10 +287,12 @@ int parallel_main(int argc, char* argv[]) {
         }
         else 
         {
+            // only box sampling algorithm 
+            // cout << "only box sampling \n";
             // int dim_x = 10; double N = 17.0; 
             // for (auto L_min : n_points_vec){
             //     auto start2 = chrono::steady_clock::now();
-            //     vector<int> box_idx = run_box_binarysearch(distance_mat, dim_x, N, L_min, L_min + 20);
+            //     vector<int> box_idx = run_box_binarysearch(distance_mat, dim_x, N, L_min, L_min+20);
             //     auto end2 = chrono::steady_clock::now();
             //     cout << "run box algorithm in seconds : " << chrono::duration_cast<chrono::seconds>(end2 - start2).count() << " sec" << endl;
             //     vector<int> box_indicator(n_sets, 0);
@@ -296,6 +301,7 @@ int parallel_main(int argc, char* argv[]) {
             //     }
             //     box_vec.push_back(box_indicator);
             // }
+            
             // run grid box algorithm 
             auto start2 = chrono::steady_clock::now();
             int dim_x = std::min(10, n_dim); double N = 17.0; int L_box = n_boxes;
@@ -314,17 +320,18 @@ int parallel_main(int argc, char* argv[]) {
             n_boxes = (int) box_idx.size();
             vector<vector<float>> Dist(n_boxes, vector<float>(n_boxes,0.0));
             int i,j; float d_max = 0.0;
-            #pragma omp parallel for private(i,j)
+            #pragma omp parallel for private(i,j) num_threads(30)
             for (i=0; i < n_boxes; ++i){
                 for (j=0; j< n_boxes; ++j){
-                    Dist[i][j] = correlationDistance(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim);
+                    // Dist[i][j] = euclideanDistance(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim);
+                    Dist[i][j] = distanceMetrics(distance_mat.at(box_idx[i]), distance_mat.at(box_idx[j]), n_dim, distance_metrics);
                     if (Dist[i][j] > d_max){
                         d_max = Dist[i][j];
                     }
                 }
             }
             end = chrono::steady_clock::now();
-            cout << "compute distance matrix in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
+            cout << "compute " << distance_metrics << " distance matrix in seconds : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " sec" << endl;
 
             // compute set cover 
             d_max = d_max/4.0; float d_min = d_max/100.0; int n_iters = 14;
@@ -354,14 +361,9 @@ int parallel_main(int argc, char* argv[]) {
         }
     }
     //write solution to file
-    // writeVec2File(dataname + "_box_solutions.csv", box_vec);
     string fileName = argv[argc-1];
-    vector<int> ind_sol = sc_solutions.at(0);
-    vector<vector<int>> output_vec;
-    for (auto v: ind_sol){
-        vector<int> temp;
-        temp.push_back(v);
-        output_vec.push_back(temp);
-    }
+    // writeVec2File(fileName, box_vec);
+
+    vector<vector<int>> output_vec = transpose(sc_solutions);
     writeVec2File(fileName, output_vec);
 }
