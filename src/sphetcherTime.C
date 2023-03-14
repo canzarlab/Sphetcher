@@ -237,6 +237,9 @@ int parallel_main(int argc, char* argv[]) {
         cout << "# of samples: " << n_sets << ", n_dim: " << n_dim << endl;
 
         int n_boxes = std::min(std::max(80000,(int) round(0.2*n_sets)), 100000);
+        if (n_boxes <= sketch_size){
+            n_boxes = sketch_size + 10;
+        }
         vector<int> n_points_vec;
         n_points_vec.push_back(sketch_size);
         if ( n_sets < n_boxes)
